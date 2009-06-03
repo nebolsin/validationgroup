@@ -7,6 +7,10 @@ class ValidationGroupModel < ActiveRecord::Base
   validation_group :step2, :fields=>[:address]     
 end
 
+class PlainModel < ActiveRecord::Base
+  validates_presence_of :name
+end
+
 class ValidationGroupTest < Test::Unit::TestCase
   def test_validation_no_groups_fail
     @model = ValidationGroupModel.new
@@ -51,5 +55,11 @@ class ValidationGroupTest < Test::Unit::TestCase
     assert_raise ArgumentError do 
       @model.enable_validation_group :invalid
     end    
-  end    
+  end
+
+  def test_validation_for_models_without_validation_group
+    @model = PlainModel.new
+    assert !@model.valid?
+    assert_equal 1, @model.errors.size
+  end
 end

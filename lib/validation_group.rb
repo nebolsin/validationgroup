@@ -52,7 +52,7 @@ module ValidationGroup
                                     msg = @@default_error_messages[:invalid], *args,
                                     &block)
         add_error = true
-        if @base.validation_group_enabled?
+        if @base.respond_to?(:validation_group_enabled?) && @base.validation_group_enabled?
           current_group = @base.current_validation_group
           found = ValidationGroup::Util.current_and_ancestors(@base.class).
             find do |klass|
